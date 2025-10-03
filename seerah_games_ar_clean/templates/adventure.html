@@ -1,147 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>لعبة المغامرة - السيرة</title>
-    <style>
-        body {
-            font-family: "Tajawal", sans-serif;
-            background-color: beige; /* Beige background */
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            color: #1b5e20; /* Dark green text */
-        }
-
-        .container {
-            padding: 40px;
-            max-width: 700px;
-            margin: auto;
-        }
-
-        h1 {
-            color: #1b5e20; /* Dark green */
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
-
-        .scenario {
-            background-color: #fdf6e3; /* Light beige box */
-            border: 2px solid #388e3c; /* Medium green border */
-            border-radius: 12px;
-            padding: 25px;
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .choices {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .game-button {
-            background-color: #388e3c; /* Medium green */
-            color: beige; /* Beige text */
-            padding: 12px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            text-decoration: none;
-        }
-
-        .game-button:hover {
-            background-color: #2e7d32; /* Darker green on hover */
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>📖 لعبة المغامرة - سيرة النبي ﷺ</h1>
-        <div id="game"></div>
-    </div>
-
-    <script>
-        let choicesMade = []; // نسجّل اختيارات اللاعب
-
-        const scenarios = [
-            { text: "١- تبدأ الدعوة في مكة سرًّا بين المقربين. هل تنضم سرًّا إلى المسلمين؟",
-              choices: [{ text: "نعم، أنضم", value: "joined" }, { text: "لا، أنتظر قليلاً", value: "waited" }] },
-
-            { text: "٢- أعلنت إسلامك وتواجه استهزاء قريش. هل تصبر أم تبحث عن حماية؟",
-              choices: [{ text: "أصبر على الأذى", value: "sabr" }, { text: "أبحث عن حماية", value: "protection" }] },
-
-            { text: "٣- يزداد البلاء. يدعو النبي ﷺ للهجرة إلى الحبشة. هل تهاجر؟",
-              choices: [{ text: "أهاجر إلى الحبشة", value: "habasha" }, { text: "أبقى في مكة", value: "makkah" }] },
-
-            { text: "٤- في الحبشة تجد عدل النجاشي. بعد مدة تعود إلى مكة وتشارك في بيعة العقبة.",
-              choices: [{ text: "أبايع نصرة الإسلام", value: "bayah" }, { text: "أبقى مترددًا", value: "no_bayah" }] },
-
-            { text: "٥- تتم بيعة العقبة في منى، ويأذن النبي ﷺ بالهجرة. هل تهاجر إلى المدينة؟",
-              choices: [{ text: "نعم، أهاجر", value: "hijrah" }, { text: "أنتظر قليلاً", value: "delay" }] },
-
-            { text: "٦- تصل إلى المدينة وتشارك في بناء المسجد والمؤاخاة.",
-              choices: [{ text: "أساعد في البناء", value: "build" }, { text: "أشارك في المؤاخاة", value: "brotherhood" }] },
-
-            { text: "٧- يحين وقت غزوة بدر الكبرى. هل تنضم للجيش؟",
-              choices: [{ text: "أنضم للجيش", value: "badr_fighter" }, { text: "أبقى في المدينة", value: "badr_stay" }] },
-
-            { text: "٨- النهاية",
-              choices: [] }
-        ];
-
-        function showScenario(i) {
-            const gameDiv = document.getElementById("game");
-
-            if (i < scenarios.length - 1) {
-                const s = scenarios[i];
-                let html = `<div class="scenario"><p>${s.text}</p></div><div class="choices">`;
-
-                s.choices.forEach((c) => {
-                    html += `<button class="game-button" onclick="makeChoice('${c.value}', ${i+1})">${c.text}</button>`;
-                });
-
-                html += "</div>";
-                gameDiv.innerHTML = html;
-            } else {
-                // تحديد النهاية حسب الاختيارات
-                let endingText = "🔚 النهاية: ";
-
-                if (choicesMade.includes("sabr")) {
-                    endingText += "ثبتَّ على الصبر ونلت أجرًا عظيمًا.";
-                } else if (choicesMade.includes("protection")) {
-                    endingText += "وجدت حماية فمارست دينك بأمان.";
-                } else if (choicesMade.includes("habasha")) {
-                    endingText += "هاجرت إلى الحبشة ووجدت عدلاً عند النجاشي.";
-                } else if (choicesMade.includes("badr_fighter")) {
-                    endingText += "شاركت في بدر ونلت شرف النصر.";
-                } else {
-                    endingText += "بقيت في المدينة تعيش في سلام.";
-                }
-
-                let html = `<div class="scenario"><p>${endingText}</p></div>
-                            <div class="choices">
-                                <a href="{{ url_for('adventure') }}" class="game-button">🔄 إعادة اللعب</a>
-                                <a href="{{ url_for('home') }}" class="game-button">🏠 الصفحة الرئيسية</a>
-                            </div>`;
-                gameDiv.innerHTML = html;
-            }
-        }
-
-        function makeChoice(value, nextIndex) {
-            choicesMade.push(value);
-            showScenario(nextIndex);
-        }
-
-        // ابدأ من المرحلة الأولى
-        showScenario(0);
-    </script>
-</body>
-</html>
