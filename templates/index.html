@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ألعاب السيرة النبوية</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: beige;
+            font-family: 'Tajawal', sans-serif; /* نفس style.css */
+            text-align: center;
+        }
+        h1 {
+            color: darkgreen;
+            margin-bottom: 25px;
+        }
+        .game-button {
+            display: block;              /* عمودي */
+            width: 250px;
+            margin: 10px auto;
+            padding: 12px 20px;
+            background: darkgreen;
+            color: beige;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        .game-button:hover {
+            background: seagreen;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ألعاب السيرة النبوية</h1>
+
+        <!-- روابط الألعاب -->
+        <a href="{{ url_for('quiz') }}" class="game-button">اختبار السيرة</a>
+        <a href="{{ url_for('memory') }}" class="game-button">لعبة الذاكرة</a>
+        <a href="{{ url_for('adventure') }}" class="game-button">لعبة المغامرة</a>
+
+        <!-- التذييل -->
+        <div class="footer">
+            مدرسة حي ام تينه الاولى للبنات
+        </div>
+    </div>
+<footer class="site-footer">
+    © 2025 Hai Um Teenah School for Girls – All rights reserved. <br>
+    © ٢٠٢٥ مدرسة حي أم تينه الأولى للبنات – جميع الحقوق محفوظة.
+</footer>
+
+</body>
+</html>
+
