@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>اختبار السيرة</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .hidden { display: none; }
+        .question-box {
+            margin: 20px auto;
+            max-width: 600px;
+            background-color: #fdf6e3;
+            border: 2px solid #388e3c;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .option {
+            display: block;
+            margin: 10px 0;
+            text-align: right;
+            font-size: 18px;
+        }
+        .controls { margin-top: 20px; }
+        .game-button {
+            background-color: #388e3c;
+            color: beige;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        .game-button:hover {
+            background-color: #2e7d32;
+            transform: scale(1.05);
+        }
+        body {
+            font-family: "Tajawal", sans-serif;
+            background-color: beige;
+            color: #1b5e20;
+            text-align: center;
+        }
+        h1 { margin-bottom: 30px; color: #1b5e20; }
+        footer.site-footer {
+            margin-top: 30px;
+            color: darkgreen;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 اختبار السيرة النبوية</h1>
+        <form id="quizForm" action="{{ url_for('quiz') }}" method="post">
+            {% for question in questions %}
+                {% set q_index = loop.index0 %}
+                <div class="question-box {% if not loop.first %}hidden{% endif %}" id="question-{{ q_index }}">
+                    <p><strong>{{ loop.index }}.</strong> {{ question.text }}</p>
+                    {% for option in question.options %}
+                        <label class="option">
+                            <input type="radio" name="q{{ q_index }}" value="{{ option }}">
+                            {{ option }}
+                        </label>
+                    {% endfor %}
+                    <div class="controls">
+                        {% if not loop.last %}
+                            <button type="button" class="game-button" onclick="nextQuestion({{ q_index }})">➡️ التالي</button>
+                        {% else %}
+                            <button type="submit" class="game-button">📤 عرض النتيجة</button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </form>
+        <a href="{{ url_for('home') }}" class="game-button">🏠 العودة للصفحة الرئيسية</a>
+    </div>
+
+    <script>
+        function nextQuestion(index) {
+            const radios = document.querySelectorAll(`#question-${index} input[type="radio"]`);
+            let answered = false;
+            radios.forEach(r => { if (r.checked) answered = true; });
+
+            if (!answered) {
+                alert("❗ يرجى اختيار إجابة قبل المتابعة");
+                return;
+            }
+
+            document.getElementById(`question-${index}`).classList.add("hidden");
+            document.getElementById(`question-${index+1}`).classList.remove("hidden");
+        }
+    </script>
+
+    <footer class="site-footer">
+        © 2025 Hai Um Teenah School for Girls – All rights reserved. <br>
+        © ٢٠٢٥ مدرسة حي أم تينه الأولى للبنات – جميع الحقوق محفوظة.
+    </footer>
+</body>
+</html>
